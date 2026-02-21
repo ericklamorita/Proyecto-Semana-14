@@ -128,3 +128,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
 </body>
 </html>
+
+<?php 
+           // BUENAS TARDES ESTO ES UNA PRUEBA
+            ?> 
