@@ -1,21 +1,21 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 session_start();
-
-//prueba
-
-//esta parte evita que nadie entre a ver el interior de la página sin estar registrado.
-header("Cache-Control: no-cache, no-store, must-revalidate");
-header("Pragma: no-cache");
-header("Expires: 0");
-
 require('conexion/conexion.php');
 
+// Verificación de sesión [cite: 34]
 if (!isset($_SESSION['usuario_id'])) {
-    header("Location: login.php");
+    header("Location: seleccion.php");
     exit();
 }
+
+$usuario_id = $_SESSION['usuario_id'];
+$fecha_hoy = date('Y-m-d');
+
+// Consultamos el estado de asistencia del día actual [cite: 41]
+$sql = "SELECT * FROM asistencias WHERE trabajador_id = ? AND fecha = ?";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$usuario_id, $fecha_hoy]);
+$asistencia = $stmt->fetch();
 ?>
 
 <!DOCTYPE html>
@@ -23,112 +23,154 @@ if (!isset($_SESSION['usuario_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cámara del Tholos - Manual Web</title>
-    
+    <title>Panel de Asistencia | Librería Puriscaleña</title>
     <style>
-    body, html {
-        margin: 0; padding: 0; height: 100%;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+        :root {
+            --primary-color: #00d4ff;
+            --bg-dark: #0f172a; /* Azul medianoche corporativo */
+            --card-bg: rgba(30, 41, 59, 0.7); /* Azul pizarra con transparencia */
+        }
 
-    /* Fondo del Olimpo */
-    .bg-olympus {
-        background-image: url('https://bookscouter.com/blog/wp-content/uploads/2024/06/minimalist-library.png'); 
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        min-height: 100vh;
-    }
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
 
-    .overlay {
-        background: rgba(0, 0, 0, 0.4); 
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-    }
+        .dashboard {
+            max-width: 500px;
+            width: 90%;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            text-align: center;
+        }
 
-    header {
-        background: rgba(0, 0, 0, 0.7);
-        color: #f1c40f; 
-        padding: 20px;
-        text-align: center;
-        border-bottom: 2px solid #f1c40f;
-    }
+        h2 {
+            margin-top: 0;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
 
-    main {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+        #reloj {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 10px 0;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
 
-    .card-olympus {
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(10px);
-        padding: 30px;
-        border-radius: 15px;
-        border: 1px solid #f1c40f;
-        width: 320px;
-        text-align: center;
-        color: white;
-    }
+        .fecha-actual {
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
 
-    .btn-god {
-        display: block;
-        width: 100%;
-        padding: 12px 0;
-        margin: 10px 0;
-        background: #f1c40f;
-        color: black;
-        text-decoration: none;
-        font-weight: bold;
-        text-transform: uppercase;
-        border-radius: 5px;
-        transition: 0.3s;
-    }
+        /* Estilo de la Status Card para Modo Oscuro [cite: 42] */
+        .status-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            margin-bottom: 30px;
+        }
 
-    .btn-god:hover { background: white; box-shadow: 0 0 15px #f1c40f; }
+        .btn {
+            display: block;
+            padding: 15px;
+            color: #0f172a;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            margin: 10px 0;
+        }
 
-    .btn-exit { background: #e74c3c !important; color: white !important; }
+        .btn-in { background-color: #22c55e; }
+        .btn-in:hover { 
+            background-color: #4ade80; 
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+            transform: translateY(-2px);
+        }
 
-    footer {
-        background: rgba(0, 0, 0, 0.8);
-        color: white;
-        text-align: center;
-        padding: 10px;
-    }
-</style>
-    
+        .btn-out { background-color: #f97316; }
+        .btn-out:hover { 
+            background-color: #fb923c; 
+            box-shadow: 0 0 20px rgba(249, 115, 22, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .links-container {
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+        }
+
+        .link-historial {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .link-historial:hover { text-decoration: underline; }
+
+        .link-logout {
+            display: block;
+            margin-top: 15px;
+            color: #ef4444;
+            text-decoration: none;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .link-logout:hover { opacity: 1; }
+    </style>
+
+    <script>
+        function actualizarReloj() {
+            const ahora = new Date();
+            document.getElementById('reloj').innerText = ahora.toLocaleTimeString();
+        }
+        setInterval(actualizarReloj, 1000);
+    </script>
 </head>
-<body class="bg-olympus">
+<body onload="actualizarReloj()">
 
-<div class="overlay">
-    <header>
-        <h2> 
-            <?php 
-            $nombre_usuario = $_SESSION['nombre'] ?? 'Guerrero'; 
-            echo "Bienvenido 👋 " . htmlspecialchars($nombre_usuario);
-            ?> 
-        </h2>
-    </header>
+    <div class="dashboard">
+        <h2>Hola, <?= htmlspecialchars($_SESSION['nombre']) ?></h2>
+        <div id="reloj">--:--:--</div>
+        <p class="fecha-actual"><?= date('d/m/Y') ?></p>
 
-    <main>
-        <div class="card-olympus">
-            <h2>Panel de Control</h2>
-            <a href="crear_tema.php" class="btn-god">Crear Nuevo Tema</a>
-            <a href="ver_temas.php" class="btn-god">Ver Temas del Saber</a>
-            <a href="logout.php" class="btn-god btn-exit">Abandonar el Olimpo</a>
+        <div class="status-card">
+            <?php if (!$asistencia): ?>
+                <p style="color: #fbbf24;"><strong>Estado:</strong> Pendiente de ingreso</p>
+                <a href="registrar_asistencia.php?accion=entrada" class="btn btn-in">Marcar Entrada</a>
+            <?php elseif ($asistencia['hora_salida'] == NULL): ?>
+                <p style="color: #4ade80;"><strong>Entrada:</strong> <?= $asistencia['hora_entrada'] ?></p>
+                <p style="font-size: 0.9rem; color: #94a3b8;">Jornada en curso</p>
+                <a href="registrar_asistencia.php?accion=salida" class="btn btn-out">Marcar Salida</a>
+            <?php else: ?>
+                <p style="color: var(--primary-color);"><strong>Jornada Finalizada</strong></p>
+                <p style="font-size: 0.9rem;">Entrada: <?= $asistencia['hora_entrada'] ?> | Salida: <?= $asistencia['hora_salida'] ?></p>
+            <?php endif; ?>
         </div>
-    </main>
 
-    <footer>
-        <p>© Librería Puriscaleña 2026</p>
-    </footer>
-</div>
+        <div class="links-container">
+            <a href="historial_marcas.php" class="link-historial">Consultar mi historial</a>
+            <a href="logout.php" class="link-logout">Cerrar sesión del sistema</a>
+        </div>
+    </div>
 
 </body>
 </html>
-
-<?php 
-           // BUENAS TARDES ESTO ES UNA PRUEBA
-            ?> 
