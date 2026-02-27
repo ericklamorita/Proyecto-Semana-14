@@ -2,7 +2,7 @@
 $host = 'localhost';
 $db   = 'libreria';   
 $user = 'root';
-$pass = '';         // no voy a usar contraseña porque el XAMPP no tiene.
+$pass = 'Admin$1234';         // no voy a usar contraseña porque el XAMPP no tiene.
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;port=3306;dbname=$db;charset=$charset";
