@@ -2,51 +2,137 @@
 <html lang="es">
     <head>
         <meta charset="UTF-8">
-        <title>Registrarse en el Olimpo</title>
-        <link rel="stylesheet" href="css/style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Registro de Personal | Librería Puriscaleña</title>
+
         <style>
-            /* Reutiliza el estilo de tu login para que se vea igual de épico */
-            body {
-                background-color: #0b0d17;
-                color: white;
-                font-family: sans-serif;
-                text-align: center;
-                padding-top: 50px;
+            :root {
+                --primary-color: #00d4ff;
+                --bg-overlay: rgba(15, 23, 42, 0.9);
             }
+
+            body, html {
+                height: 100vh; /* Usar vh es más seguro para pantallas móviles */
+                margin: 0;
+                font-family: 'Segoe UI', sans-serif;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #0f172a;
+            }
+
+            /* Imagen de fondo sutil */
+            .bg-blur {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-image: url('');
+                background-size: cover;
+                background-position: center;
+                filter: brightness(0.3) blur(8px);
+                z-index: -1;
+            }
+
             .reg-container {
-                background: rgba(0,0,0,0.8);
-                padding: 30px;
-                border-radius: 10px;
-                border: 1px solid #00d4ff;
-                display: inline-block;
+                background: var(--bg-overlay);
+                padding: 40px;
+                border-radius: 16px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                width: 380px;
+                /* Esto es lo que evita que se estire */
+                max-height: 90vh;
+                overflow-y: auto; /* Por si la pantalla es muy pequeña */
+                text-align: center;
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(10px);
+                z-index: 1; /* Para que esté por encima del fondo */
             }
-            input {
-                display: block;
-                width: 250px;
-                padding: 10px;
-                margin: 10px auto;
-                background: #1a1a1a;
-                border: 1px solid #00d4ff;
+
+            h2 {
+                font-weight: 600;
+                letter-spacing: 1px;
+                margin-bottom: 8px;
                 color: white;
             }
+
+            .subtitle {
+                color: #94a3b8;
+                font-size: 0.9rem;
+                margin-bottom: 30px;
+                display: block;
+            }
+
+            input {
+                width: 100%;
+                padding: 12px 15px;
+                margin: 10px 0;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: white;
+                border-radius: 8px;
+                outline: none;
+                transition: 0.3s;
+                box-sizing: border-box;
+            }
+
+            input:focus {
+                border-color: var(--primary-color);
+                background: rgba(255, 255, 255, 0.1);
+                box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.15);
+            }
+
             button {
-                background: #00d4ff;
-                color: black;
+                width: 100%;
+                padding: 14px;
+                margin-top: 20px;
+                background-color: var(--primary-color);
+                color: #0f172a;
                 border: none;
-                padding: 10px 20px;
-                cursor: pointer;
+                border-radius: 8px;
                 font-weight: bold;
+                text-transform: uppercase;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+            button:hover {
+                background-color: white;
+                transform: translateY(-2px);
+            }
+
+            .back-link {
+                margin-top: 25px;
+                font-size: 0.85rem;
+                color: #94a3b8;
+            }
+
+            .back-link a {
+                color: var(--primary-color);
+                text-decoration: none;
+                font-weight: 600;
             }
         </style>
     </head>
     <body>
+
+        <div class="bg-blur"></div>
+
         <div class="reg-container">
-            <h2>Únete a las Legiones</h2>
-            <input type="text" id="nombre" placeholder="Nombre de Guerrero">
-            <input type="email" id="email" placeholder="Correo electrónico">
-            <input type="password" id="password" placeholder="Contraseña">
-            <button id="btnRegistrar">CONSAGRAR REGISTRO</button>
-            <p><a href="login.php" style="color: #00d4ff; text-decoration: none; font-size: 0.8em;">YA SOY DIGNO (VOLVER)</a></p>
+            <h2>Crear Cuenta</h2>
+            <span class="subtitle">Formulario de registro</span>
+
+            <input type="text" id="nombre" placeholder="Nombre completo">
+            <input type="email" id="email" placeholder="Correo institucional">
+            <input type="password" id="password" placeholder="Contraseña de acceso">
+
+            <button id="btnRegistrar">Completar Registro</button>
+
+            <div class="back-link">
+                ¿Ya tiene una cuenta? <a href="login.php">Iniciar sesión</a>
+            </div>
         </div>
 
         <script type="module">
@@ -73,7 +159,7 @@
                 const nombre = document.getElementById('nombre').value;
 
                 if (!email || !pass || !nombre) {
-                    alert("¡Mortal! No dejes campos vacíos.");
+                    alert("Por favor, complete todos los campos obligatorios.");
                     return;
                 }
 
@@ -88,11 +174,11 @@
                         })
                         .then(response => {
                             if (response.ok) {
-                                alert("¡Has sido aceptado en el Olimpo!");
+                                alert("Cuenta creada exitosamente. Ya puede iniciar sesión.");
                                 window.location.href = 'login.php';
                             }
                         })
-                        .catch((error) => alert("Error del Olimpo: " + error.message));
+                        .catch((error) => alert("Error en el registro: " + error.message));
             });
         </script>
     </body>
