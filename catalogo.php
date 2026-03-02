@@ -28,8 +28,13 @@ $libros = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body class="bg-slate-100">
     <nav class="bg-slate-900 p-4 text-white shadow-xl sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold tracking-wider text-cyan-400">VILLA DE LIBROS</h1>
-            
+            <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-wider text-cyan-400">
+                <a href="catalogo.php" class="hover:text-cyan-400 transition flex items-center gap-2">
+                    <span>Villa De Libros</span>
+                </a>
+                
+            </h1>
             <div class="flex items-center space-x-6">
                 <a href="mis_alquileres.php" class="hover:text-cyan-400 transition flex items-center gap-2">
                     📖 <span>Mi Historial</span>
@@ -43,7 +48,9 @@ $libros = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </span>
                     <?php endif; ?>
                 </a>
-
+                <a href="Buscador.php" class="hover:text-cyan-400 transition flex items-center gap-2">
+                    🔍 <span>Buscar</span>
+                </a>
                 <div class="h-6 w-px bg-slate-700"></div>
 
                 <div class="flex items-center gap-4">
