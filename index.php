@@ -175,6 +175,7 @@ $asistencia = $stmt->fetch();
             </div>
 
             <div class="links-container">
+                <a href="admin_libros.php" class="btn btn-in">📚 Administrar Libros</a>
                 <a href="agregar_libro.php" class="btn btn-in">➕ Agregar Libro</a>
                 <a href="historial_marcas.php" class="link-historial">Consultar mi historial</a>
                 <a href="logout.php" class="link-logout">Cerrar sesión del sistema</a>
