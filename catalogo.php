@@ -75,7 +75,7 @@ $libros = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php foreach($libros as $libro): ?>
             <div class="bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden border border-slate-200 group">
                 <div class="relative overflow-hidden">
-                    <img src="<?php echo $libro['imagen']; ?>" class="h-56 w-full object-cover group-hover:scale-110 transition duration-500">
+                    <img src="<?php echo $libro['imagen']; ?>" class="h-70 w-full object-cover group-hover:scale-110 transition duration-500">
                     <div class="absolute top-3 right-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-cyan-600 shadow-sm">
                         <?php echo $libro['categoria']; ?>
                     </div>

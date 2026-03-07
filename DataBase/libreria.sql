@@ -86,7 +86,21 @@ INSERT INTO producto (id, titulo, descripcion, precio, imagen, categoria_id) VAL
 (4, 'Sherlock Holmes', 'Misterio clásico. Precio especial.', 1.99, 'https://m.media-amazon.com/images/I/61NlK4C935L.jpg', 4),
 (5, 'El Principito', 'Lectura esencial. Alquiler estándar.', 2.50, 'https://m.media-amazon.com/images/I/71Y3yP9j8lHL.jpg', 3);
 
+INSERT INTO producto (id, titulo, descripcion, precio, imagen, categoria_id) VALUES  
+(6, 'IT', 'Alquiler por 30 días. Formato Digital.', 3.99, 'https://www.imdb.com/es/title/tt1396484/mediaviewer/rm2985515264/?ref_=tt_ov_i', 3);
+
+
 SET FOREIGN_KEY_CHECKS = 0;
 
 INSERT INTO trabajador (nombre, email, password, entrada, salida) 
 VALUES ('admin', 'admin@libreria.com', '123456', 0, 0);
+
+
+-- Desactivar verificación de claves foráneas
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- Vaciar completamente la tabla producto
+TRUNCATE TABLE producto;
+
+-- Volver a activar las claves foráneas
+SET FOREIGN_KEY_CHECKS = 1;
