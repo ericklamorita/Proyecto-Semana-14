@@ -1,5 +1,6 @@
 <?php
 session_start();
+// 1. La conexión está en su carpeta, entramos directo
 require_once 'conexion/conexion.php';
 
 // SEGURIDAD: Solo clientes
@@ -84,10 +85,10 @@ if (!$libro) {
                     </div>
                 </div>
 
-                <form action="agregar_carrito.php" method="POST" id="formAlquiler">
+                <form action="alquiler/agregar_carrito.php" method="POST" id="formAlquiler">
                     <input type="hidden" name="producto_id" value="<?php echo $libro['id']; ?>">
                     <input type="hidden" name="titulo" value="<?php echo $libro['titulo']; ?>">
-                    <input type="hidden" name="precio_dia" value="<?php echo $libro['precio']; ?>">
+                    <input type="hidden" name="precio" value="<?php echo $libro['precio']; ?>">
                     
                     <input type="hidden" name="fecha_inicio" id="hidden_inicio">
                     <input type="hidden" name="fecha_fin" id="hidden_fin">
@@ -138,7 +139,6 @@ if (!$libro) {
                 document.getElementById('display_iva').innerText = iva.toFixed(2);
                 document.getElementById('display_total').innerText = total.toFixed(2);
 
-                // IMPORTANTE: Actualizar los hiddens para el PHP
                 document.getElementById('hidden_inicio').value = inputInicio.value;
                 document.getElementById('hidden_fin').value = inputFin.value;
                 document.getElementById('hidden_total').value = total.toFixed(2);
@@ -157,15 +157,7 @@ if (!$libro) {
             inputFin.min = inputInicio.value;
             calcular();
         });
-
         inputFin.addEventListener('change', calcular);
-
-        document.getElementById('formAlquiler').addEventListener('submit', (e) => {
-            if (!document.getElementById('hidden_total').value) {
-                e.preventDefault();
-                alert("Selecciona un periodo de fechas para calcular el costo.");
-            }
-        });
     </script>
 </body>
 </html>

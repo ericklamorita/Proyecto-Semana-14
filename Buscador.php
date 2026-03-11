@@ -1,5 +1,6 @@
 <?php
 session_start();
+// 1. La conexión está en su carpeta, entramos directamente
 require_once 'conexion/conexion.php';
 
 // Obtener categorías
@@ -51,14 +52,13 @@ $libros = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <a href="catalogo.php" class="hover:text-cyan-400 transition flex items-center gap-2">
                     <span>Villa De Libros</span>
                 </a>
-                
             </h1>
             <div class="flex items-center space-x-6">
-                <a href="mis_alquileres.php" class="hover:text-cyan-400 transition flex items-center gap-2">
+                <a href="alquiler/mis_alquileres.php" class="hover:text-cyan-400 transition flex items-center gap-2">
                     📖 <span>Mi Historial</span>
                 </a>
 
-                <a href="carrito.php" class="relative hover:text-cyan-400 transition flex items-center gap-2">
+                <a href="alquiler/carrito.php" class="relative hover:text-cyan-400 transition flex items-center gap-2">
                     🛒 <span>Carrito</span>
                     <?php if ($conteo_carrito > 0): ?>
                         <span class="absolute -top-2 -right-3 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
@@ -71,64 +71,56 @@ $libros = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 <div class="flex items-center gap-4">
                     <span class="text-sm text-slate-300 italic">Hola, <?php echo $_SESSION['nombre']; ?></span>
-                    <a href="logout.php" class="bg-red-500/10 text-red-400 px-3 py-1 rounded-lg border border-red-500/20 hover:bg-red-500 hover:text-white transition text-sm">
+                    <a href="auth/logout.php" class="bg-red-500/10 text-red-400 px-3 py-1 rounded-lg border border-red-500/20 hover:bg-red-500 hover:text-white transition text-sm">
                         Salir
                     </a>
                 </div>
             </div>
         </div>
     </nav>
-<h1 class="text-3xl font-bold mb-6">Buscar Libros</h1>
+
+<h1 class="text-3xl font-bold mb-6 mt-6">Buscar Libros</h1>
 
 <form method="POST" class="bg-white p-6 rounded-xl shadow-md mb-8 flex gap-4">
-
-    <input type="text" 
-           name="titulo" 
-           placeholder="Buscar por título"
-           value="<?php echo htmlspecialchars($titulo); ?>"
-           class="border p-2 rounded w-1/2">
-
+    <input type="text" name="titulo" placeholder="Buscar por título" value="<?php echo htmlspecialchars($titulo); ?>" class="border p-2 rounded w-1/2">
     <select name="genero" class="border p-2 rounded w-1/3">
         <option value="">Todos los géneros</option>
         <?php foreach($categorias as $cat): ?>
-            <option value="<?php echo $cat['id']; ?>"
-                <?php if($genero == $cat['id']) echo 'selected'; ?>>
+            <option value="<?php echo $cat['id']; ?>" <?php if($genero == $cat['id']) echo 'selected'; ?>>
                 <?php echo $cat['nombre']; ?>
             </option>
         <?php endforeach; ?>
     </select>
-
-    <button type="submit" 
-            class="bg-blue-600 text-white px-6 rounded">
-        BUSCAR
-    </button>
-
+    <button type="submit" class="bg-blue-600 text-white px-6 rounded">BUSCAR</button>
 </form>
-<table class="w-full border border-gray-400 bg-white">
-<tr class="bg-blue-500 text-white">
-    <th>ID</th>
-    <th>Título</th>
-    <th>Categoría</th>
-    <th>Precio</th>
-</tr>
 
-<?php if(count($libros) > 0): ?>
-    <?php foreach($libros as $libro): ?>
-        <tr class="text-center border">
-            <td><?php echo $libro['id']; ?></td>
-            <td><?php echo $libro['titulo']; ?></td>
-            <td><?php echo $libro['categoria']; ?></td>
-            <td>$<?php echo number_format($libro['precio'],2); ?></td>
+<table class="w-full border border-gray-400 bg-white shadow-lg rounded-lg overflow-hidden">
+    <thead class="bg-blue-500 text-white">
+        <tr>
+            <th class="p-3">ID</th>
+            <th class="p-3">Título</th>
+            <th class="p-3">Categoría</th>
+            <th class="p-3">Precio</th>
         </tr>
-    <?php endforeach; ?>
-<?php else: ?>
-    <tr>
-        <td colspan="4" class="text-center p-4">
-            NO HAY RESULTADOS
-        </td>
-    </tr>
-<?php endif; ?>
-
+    </thead>
+    <tbody>
+    <?php if(count($libros) > 0): ?>
+        <?php foreach($libros as $libro): ?>
+            <tr class="text-center border-b hover:bg-gray-50 transition">
+                <td class="p-3"><?php echo $libro['id']; ?></td>
+                <td class="p-3 font-semibold"><?php echo $libro['titulo']; ?></td>
+                <td class="p-3"><?php echo $libro['categoria']; ?></td>
+                <td class="p-3 text-blue-600 font-bold">$<?php echo number_format($libro['precio'],2); ?></td>
+            </tr>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="4" class="text-center p-10 text-gray-400">
+                <span class="text-4xl">🔎</span><br>NO HAY RESULTADOS
+            </td>
+        </tr>
+    <?php endif; ?>
+    </tbody>
 </table>
 
 </body>

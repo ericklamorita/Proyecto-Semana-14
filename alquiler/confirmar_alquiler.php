@@ -1,6 +1,7 @@
 <?php
 session_start();
-require_once 'conexion/conexion.php';
+// 1. CORRECCIÓN: Subimos un nivel para encontrar la carpeta de conexión
+require_once '../conexion/conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario_id = $_SESSION['usuario_id'];
@@ -15,12 +16,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$usuario_id, $producto_id, $fecha_inicio, $fecha_fin, $total_pago]);
 
-        // Redirigir con mensaje de éxito
+        // 2. CORRECCIÓN: El script de redirección debe salir de la carpeta alquiler/
+        // para encontrar el catalogo.php en la raíz.
         echo "<script>
                 alert('¡Felicidades! Tu libro ha sido reservado en Villa de Libros.');
-                window.location.href = 'catalogo.php';
+                window.location.href = '../catalogo.php';
               </script>";
+        exit();
     } catch (PDOException $e) {
         die("Error al procesar el alquiler: " . $e->getMessage());
     }
 }
+?>

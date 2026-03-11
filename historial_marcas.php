@@ -1,23 +1,24 @@
 <?php
 session_start();
+// 1. La conexión está en la carpeta 'conexion/', entramos directo
 require('conexion/conexion.php');
 
-// Protección del acceso (Punto 2 del proyecto)
+// 2. SEGURIDAD: Si el trabajador no ha iniciado sesión, lo mandamos al login en 'auth/'
 if (!isset($_SESSION['usuario_id'])) {
-    header("Location: login.php");
+    header("Location: auth/login.php");
     exit();
 }
 
-// Busca esta parte del código:
-$usuario_id = $_SESSION['usuario_id']; // Este es el ID del trabajador logueado
-// CAMBIA LA CONSULTA ASÍ:
+$usuario_id = $_SESSION['usuario_id']; 
+
+// Consulta para obtener el historial del trabajador actual
 $sql = "SELECT fecha, hora_entrada, hora_salida 
         FROM asistencias 
         WHERE trabajador_id = ? 
         ORDER BY fecha DESC";
 
 $stmt = $pdo->prepare($sql);
-$stmt->execute([$usuario_id]); // Aquí pasamos el ID que tenemos en la sesión
+$stmt->execute([$usuario_id]);
 $registros = $stmt->fetchAll();
 ?>
 
@@ -26,7 +27,7 @@ $registros = $stmt->fetchAll();
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Mi Historial | Librería Puriscaleña</title>
+        <title>Mi Historial | Villa de Libros</title>
         <style>
             :root {
                 --primary-color: #00d4ff;
@@ -129,7 +130,6 @@ $registros = $stmt->fetchAll();
                 font-size: 0.85rem;
             }
 
-            /* Estilo para cuando no hay datos */
             .no-data {
                 text-align: center;
                 padding: 40px;
@@ -143,7 +143,7 @@ $registros = $stmt->fetchAll();
             <a href="index.php" class="btn-back">← Volver al Panel de Control</a>
 
             <h2>Historial de Asistencia Personal</h2>
-            <p class="emp-info">Colaborador: <strong><?= htmlspecialchars($_SESSION['nombre']) ?></strong></p>
+            <p class="emp-info">Colaborador: <strong><?= htmlspecialchars($_SESSION['nombre'] ?? 'Usuario') ?></strong></p>
 
             <table>
                 <thead>
@@ -172,7 +172,7 @@ $registros = $stmt->fetchAll();
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="4" class="no-data">No se han encontrado registros de asistencia en la base de datos.</td>
+                            <td colspan="4" class="no-data">No se han encontrado registros de asistencia en tu historial.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>

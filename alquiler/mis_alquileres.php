@@ -1,6 +1,13 @@
 <?php
 session_start();
-require_once 'conexion/conexion.php';
+// 1. CORRECCIÓN: Salimos de 'alquiler' para buscar 'conexion'
+require_once '../conexion/conexion.php';
+
+// Verificación de seguridad: Si no hay sesión, mandamos al login
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: ../auth/login.php");
+    exit();
+}
 
 $usuario_id = $_SESSION['usuario_id'];
 $stmt = $pdo->prepare("SELECT a.*, p.titulo, p.imagen FROM alquileres a 
@@ -21,10 +28,14 @@ $alquileres = $stmt->fetchAll();
     <div class="max-w-5xl mx-auto">
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-3xl font-bold text-slate-800">📚 Mi Historial de Lectura</h1>
-            <a href="catalogo.php" class="bg-cyan-500 text-white px-4 py-2 rounded-lg font-bold">Volver al Catálogo</a>
+            <a href="../catalogo.php" class="bg-cyan-500 text-white px-4 py-2 rounded-lg font-bold">Volver al Catálogo</a>
         </div>
 
         <div class="grid gap-6">
+            <?php if (empty($alquileres)): ?>
+                <p class="text-center text-slate-400 py-10">Aún no has alquilado ningún libro.</p>
+            <?php endif; ?>
+
             <?php foreach ($alquileres as $alq): ?>
             <div class="bg-white p-6 rounded-2xl shadow-md flex items-center gap-6 border-l-8 border-cyan-400">
                 <img src="<?php echo $alq['imagen']; ?>" class="w-20 h-28 object-cover rounded-lg shadow">

@@ -1,5 +1,6 @@
 <?php
 session_start();
+// La conexión está en la carpeta 'conexion/', entramos directo
 require_once 'conexion/conexion.php';
 
 // SEGURIDAD: Si no es cliente, lo mandamos afuera
@@ -28,19 +29,17 @@ $libros = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body class="bg-slate-100">
     <nav class="bg-slate-900 p-4 text-white shadow-xl sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
-            <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl font-bold tracking-wider text-cyan-400">
                 <a href="catalogo.php" class="hover:text-cyan-400 transition flex items-center gap-2">
                     <span>Villa De Libros</span>
                 </a>
-                
             </h1>
             <div class="flex items-center space-x-6">
-                <a href="mis_alquileres.php" class="hover:text-cyan-400 transition flex items-center gap-2">
+                <a href="alquiler/mis_alquileres.php" class="hover:text-cyan-400 transition flex items-center gap-2">
                     📖 <span>Mi Historial</span>
                 </a>
 
-                <a href="carrito.php" class="relative hover:text-cyan-400 transition flex items-center gap-2">
+                <a href="alquiler/carrito.php" class="relative hover:text-cyan-400 transition flex items-center gap-2">
                     🛒 <span>Carrito</span>
                     <?php if ($conteo_carrito > 0): ?>
                         <span class="absolute -top-2 -right-3 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
@@ -48,14 +47,16 @@ $libros = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </span>
                     <?php endif; ?>
                 </a>
+
                 <a href="Buscador.php" class="hover:text-cyan-400 transition flex items-center gap-2">
                     🔍 <span>Buscar</span>
                 </a>
+
                 <div class="h-6 w-px bg-slate-700"></div>
 
                 <div class="flex items-center gap-4">
                     <span class="text-sm text-slate-300 italic">Hola, <?php echo $_SESSION['nombre']; ?></span>
-                    <a href="logout.php" class="bg-red-500/10 text-red-400 px-3 py-1 rounded-lg border border-red-500/20 hover:bg-red-500 hover:text-white transition text-sm">
+                    <a href="auth/logout.php" class="bg-red-500/10 text-red-400 px-3 py-1 rounded-lg border border-red-500/20 hover:bg-red-500 hover:text-white transition text-sm">
                         Salir
                     </a>
                 </div>
@@ -74,13 +75,15 @@ $libros = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <?php foreach($libros as $libro): ?>
             <div class="bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden border border-slate-200 group">
-                <div class="relative overflow-hidden">
-                    <img src="<?php echo $libro['imagen']; ?>" class="h-70 w-full object-cover group-hover:scale-110 transition duration-500">
+                
+                <div class="relative overflow-hidden h-96 bg-slate-200 flex items-center justify-center p-6">
+                    <img src="<?php echo $libro['imagen']; ?>" 
+                         class="h-full object-contain drop-shadow-2xl group-hover:scale-105 transition duration-500">
+                    
                     <div class="absolute top-3 right-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-cyan-600 shadow-sm">
                         <?php echo $libro['categoria']; ?>
                     </div>
                 </div>
-                
                 <div class="p-6">
                     <h3 class="text-xl font-bold text-slate-800"><?php echo $libro['titulo']; ?></h3>
                     <p class="text-slate-600 text-sm mt-3 line-clamp-2 leading-relaxed"><?php echo $libro['descripcion']; ?></p>

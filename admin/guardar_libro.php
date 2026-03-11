@@ -1,5 +1,6 @@
 <?php
-require('conexion/conexion.php');
+// 1. Salimos de 'admin' para buscar la carpeta 'conexion'
+require('../conexion/conexion.php');
 
 $titulo = $_POST['titulo'];
 $descripcion = $_POST['descripcion'];
@@ -13,5 +14,8 @@ $sql = "INSERT INTO producto (titulo, descripcion, precio, imagen, categoria_id)
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$titulo, $descripcion, $precio, $imagen, $categoria_id]);
 
-header("Location: catalogo.php");
+// 2. CORRECCIÓN CLAVE: catalogo.php está en la raíz, 
+// así que debemos usar ../ para salir de la carpeta 'admin'
+header("Location: ../catalogo.php");
+exit();
 ?>

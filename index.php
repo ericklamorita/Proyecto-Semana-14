@@ -1,8 +1,9 @@
 <?php
 session_start();
+// La conexión está en la carpeta 'conexion/', entramos directo
 require('conexion/conexion.php');
 
-// Verificación de sesión [cite: 34]
+// Verificación de sesión: Si no hay sesión, mandamos a la selección inicial
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: seleccion.php");
     exit();
@@ -11,7 +12,7 @@ if (!isset($_SESSION['usuario_id'])) {
 $usuario_id = $_SESSION['usuario_id'];
 $fecha_hoy = date('Y-m-d');
 
-// Consultamos el estado de asistencia del día actual [cite: 41]
+// Consultamos el estado de asistencia del día actual
 $sql = "SELECT * FROM asistencias WHERE trabajador_id = ? AND fecha = ?";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$usuario_id, $fecha_hoy]);
@@ -27,8 +28,8 @@ $asistencia = $stmt->fetch();
         <style>
             :root {
                 --primary-color: #00d4ff;
-                --bg-dark: #0f172a; /* Azul medianoche corporativo */
-                --card-bg: rgba(30, 41, 59, 0.7); /* Azul pizarra con transparencia */
+                --bg-dark: #0f172a; 
+                --card-bg: rgba(30, 41, 59, 0.7);
             }
 
             body {
@@ -74,7 +75,6 @@ $asistencia = $stmt->fetch();
                 font-size: 1.1rem;
             }
 
-            /* Estilo de la Status Card para Modo Oscuro [cite: 42] */
             .status-card {
                 background: rgba(255, 255, 255, 0.05);
                 padding: 25px;
@@ -96,21 +96,24 @@ $asistencia = $stmt->fetch();
                 margin: 10px 0;
             }
 
-            .btn-in {
-                background-color: #22c55e;
-            }
+            .btn-in { background-color: #22c55e; }
             .btn-in:hover {
                 background-color: #4ade80;
                 box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
                 transform: translateY(-2px);
             }
 
-            .btn-out {
-                background-color: #f97316;
-            }
+            .btn-out { background-color: #f97316; }
             .btn-out:hover {
                 background-color: #fb923c;
                 box-shadow: 0 0 20px rgba(249, 115, 22, 0.4);
+                transform: translateY(-2px);
+            }
+
+            .btn-admin { background-color: var(--primary-color); }
+            .btn-admin:hover {
+                background-color: #7dd3fc;
+                box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
                 transform: translateY(-2px);
             }
 
@@ -127,9 +130,7 @@ $asistencia = $stmt->fetch();
                 transition: 0.3s;
             }
 
-            .link-historial:hover {
-                text-decoration: underline;
-            }
+            .link-historial:hover { text-decoration: underline; }
 
             .link-logout {
                 display: block;
@@ -140,9 +141,7 @@ $asistencia = $stmt->fetch();
                 opacity: 0.8;
             }
 
-            .link-logout:hover {
-                opacity: 1;
-            }
+            .link-logout:hover { opacity: 1; }
         </style>
 
         <script>
@@ -175,10 +174,12 @@ $asistencia = $stmt->fetch();
             </div>
 
             <div class="links-container">
-                <a href="admin_libros.php" class="btn btn-in">📚 Administrar Libros</a>
-                <a href="agregar_libro.php" class="btn btn-in">➕ Agregar Libro</a>
+                <a href="admin/admin_libros.php" class="btn btn-admin">📚 Administrar Libros</a>
+                <a href="admin/agregar_libro.php" class="btn btn-admin">➕ Agregar Libro</a>
+                
                 <a href="historial_marcas.php" class="link-historial">Consultar mi historial</a>
-                <a href="logout.php" class="link-logout">Cerrar sesión del sistema</a>
+                
+                <a href="auth/logout.php" class="link-logout">Cerrar sesión del sistema</a>
             </div>
         </div>
 
