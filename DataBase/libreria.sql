@@ -66,6 +66,8 @@ VALUES ('Marco', 'marcoesteban116@hotmail.com', '123456');
 INSERT INTO usuarios (nombre, email, password) 
 VALUES ('Marco', 'marcoesteban777@gmail.com', '123456');
 
+
+
 USE libreria;
 
 -- Primero las categorías

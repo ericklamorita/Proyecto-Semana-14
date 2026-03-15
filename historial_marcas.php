@@ -34,6 +34,7 @@ $registros = $stmt->fetchAll();
                 --bg-dark: #0f172a;
                 --card-bg: rgba(30, 41, 59, 0.7);
             }
+            
 
             body {
                 font-family: 'Segoe UI', sans-serif;
