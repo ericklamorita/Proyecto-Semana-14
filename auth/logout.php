@@ -22,9 +22,6 @@ session_destroy(); // Esto limpia la sesión de PHP
     const auth = getAuth(app);
 
     signOut(auth).then(() => {
-        // CORRECCIÓN: Como logout.php y login.php están en la misma carpeta 'auth',
-        // se queda igual. Pero si quisieras mandarlo a la raíz (seleccion.php),
-        // tendrías que usar "../seleccion.php"
         window.location.href = "login.php"; 
     });
 </script>

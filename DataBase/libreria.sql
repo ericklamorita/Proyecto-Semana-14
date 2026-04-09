@@ -37,6 +37,8 @@ CREATE TABLE producto (
 USE libreria;
 
 -- Para que funcione tu index.php (Asistencias)
+-- El ON DELETE CASCADE es un seguro de limpieza:
+-- Si algún día borramos a un trabajador de la tabla trabajador, el sistema borrará automáticamente todas sus asistencias de esta tabla. Así no quedan "datos huérfanos" ocupando espacio sin pertenecer a nadie.
 CREATE TABLE asistencias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     trabajador_id INT NOT NULL,
@@ -47,7 +49,6 @@ CREATE TABLE asistencias (
     FOREIGN KEY (trabajador_id) REFERENCES trabajador(id) ON DELETE CASCADE
 );
 
--- Para que funcione el Carrito (Alquileres)
 CREATE TABLE alquileres (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
@@ -59,7 +60,6 @@ CREATE TABLE alquileres (
     FOREIGN KEY (producto_id) REFERENCES producto(id) ON DELETE CASCADE
 );
 
--- AHORA SÍ, INSERTAMOS EL USUARIO
 INSERT INTO usuarios (nombre, email, password) 
 VALUES ('Marco', 'marcoesteban116@hotmail.com', '123456');
 
@@ -70,7 +70,7 @@ VALUES ('Marco', 'marcoesteban777@gmail.com', '123456');
 
 USE libreria;
 
--- Primero las categorías
+
 INSERT INTO categorias (nombre) VALUES 
 ('Fantasía'), 
 ('Terror'), 
@@ -80,16 +80,8 @@ INSERT INTO categorias (nombre) VALUES
 ALTER TABLE producto MODIFY COLUMN precio DECIMAL(10,2) NOT NULL;
 ALTER TABLE alquileres MODIFY COLUMN total_pago DECIMAL(10,2) NOT NULL;
 
--- 3. Insertamos los libros con precios en USD ($)
 INSERT INTO producto (id, titulo, descripcion, precio, imagen, categoria_id) VALUES  
-(1, 'Cien años de soledad', 'Alquiler por 30 días. Formato Digital.', 3.99, 'https://m.media-amazon.com/images/I/81WojUM97dL.jpg', 3),
-(2, 'IT (Eso)', 'Bestseller de Stephen King. Novedad.', 5.50, 'https://m.media-amazon.com/images/I/71YyP9j8lHL.jpg', 2),
-(3, 'El Hobbit', 'Fantasía épica. Alquiler económico.', 2.99, 'https://m.media-amazon.com/images/I/710u7vL9HUL.jpg', 1),
-(4, 'Sherlock Holmes', 'Misterio clásico. Precio especial.', 1.99, 'https://m.media-amazon.com/images/I/61NlK4C935L.jpg', 4),
-(5, 'El Principito', 'Lectura esencial. Alquiler estándar.', 2.50, 'https://m.media-amazon.com/images/I/71Y3yP9j8lHL.jpg', 3);
-
-INSERT INTO producto (id, titulo, descripcion, precio, imagen, categoria_id) VALUES  
-(6, 'IT', 'Alquiler por 30 días. Formato Digital.', 3.99, 'https://www.imdb.com/es/title/tt1396484/mediaviewer/rm2985515264/?ref_=tt_ov_i', 3);
+(1, 'Cien años de soledad', 'Alquiler por 30 días. Formato Digital.', 3.99, 'https://m.media-amazon.com/images/I/81WojUM97dL.jpg', 3);
 
 
 SET FOREIGN_KEY_CHECKS = 0;
