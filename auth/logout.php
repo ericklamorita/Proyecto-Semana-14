@@ -22,6 +22,6 @@ session_destroy(); // Esto limpia la sesión de PHP
     const auth = getAuth(app);
 
     signOut(auth).then(() => {
-        window.location.href = "login.php"; 
+        window.location.href = "../seleccion.php"; 
     });
 </script>
