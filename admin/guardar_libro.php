@@ -16,6 +16,6 @@ $stmt->execute([$titulo, $descripcion, $precio, $imagen, $categoria_id]);
 
 // 2. CORRECCIÓN CLAVE: catalogo.php está en la raíz, 
 // así que debemos usar ../ para salir de la carpeta 'admin'
-header("Location: ../catalogo.php");
+header("Location: admin_libros.php");
 exit();
 ?>
