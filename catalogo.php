@@ -13,7 +13,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'cliente') {
 $conteo_carrito = isset($_SESSION['carrito']) ? count($_SESSION['carrito']) : 0;
 
 // CONSULTA DE LIBROS
-$stmt = $pdo->query("SELECT p.*, c.nombre as categoria 
+$stmt = $pdo->query("SELECT p.*, c.nombre as categoria
                      FROM producto p 
                      LEFT JOIN categorias c ON p.categoria_id = c.id");
 $libros = $stmt->fetchAll(PDO::FETCH_ASSOC);
