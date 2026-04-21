@@ -6,7 +6,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            /* Mantenemos tu fondo temático que le da mucha personalidad */
             background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), 
                         url('https://thumbs.dreamstime.com/z/una-extra%C3%B1a-aldea-de-libros-cuentos-cobra-vida-en-un-libro-abierto-esta-encantadora-ilustraci%C3%B3n-muestra-caprichosa-casas-395741030.jpg');
             background-size: cover;
