@@ -1,18 +1,16 @@
 <?php
-// 1. CORRECCIÓN: Salimos de la carpeta 'auth' para entrar a 'conexion'
 require('../conexion/conexion.php');
 
 if (isset($_POST['email'])) {
     $nombre = $_POST['nombre'];
     $email = $_POST['email'];
-    // El UID de Firebase que mencionas (buena práctica no guardar contraseñas locales)
     $uid = $_POST['uid']; 
 
     $sql = "INSERT INTO usuarios (nombre, email, password) VALUES (?, ?, ?)";
     $stmt = $pdo->prepare($sql);
     
     if($stmt->execute([$nombre, $email, $uid])) {
-        // Esto será recibido por el fetch en tu registro.php
+        // Esto será recibido por el fetch en registro.php
         echo "Usuario consagrado en MySQL";
     } else {
         http_response_code(500);
