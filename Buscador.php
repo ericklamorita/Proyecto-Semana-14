@@ -39,89 +39,94 @@ $libros = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <!DOCTYPE html>
 <html lang="es">
-<head>
-<meta charset="UTF-8">
-<title>Buscador de Libros</title>
-<script src="https://cdn.tailwindcss.com"></script>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Buscador de Libros</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
 
-<body class="bg-green-100 p-10">
-<nav class="bg-slate-900 p-4 text-white shadow-xl sticky top-0 z-50">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold tracking-wider text-cyan-400">
-                <a href="catalogo.php" class="hover:text-cyan-400 transition flex items-center gap-2">
-                    <span>Villa De Libros</span>
-                </a>
-            </h1>
-            <div class="flex items-center space-x-6">
-                <a href="alquiler/mis_alquileres.php" class="hover:text-cyan-400 transition flex items-center gap-2">
-                    📖 <span>Mi Historial</span>
-                </a>
-
-                <a href="alquiler/carrito.php" class="relative hover:text-cyan-400 transition flex items-center gap-2">
-                    🛒 <span>Carrito</span>
-                    <?php if ($conteo_carrito > 0): ?>
-                        <span class="absolute -top-2 -right-3 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                            <?php echo $conteo_carrito; ?>
-                        </span>
-                    <?php endif; ?>
-                </a>
-                
-                <div class="h-6 w-px bg-slate-700"></div>
-
-                <div class="flex items-center gap-4">
-                    <span class="text-sm text-slate-300 italic">Hola, <?php echo $_SESSION['nombre']; ?></span>
-                    <a href="auth/logout.php" class="bg-red-500/10 text-red-400 px-3 py-1 rounded-lg border border-red-500/20 hover:bg-red-500 hover:text-white transition text-sm">
-                        Salir
+    <body class="bg-green-100 p-10">
+        <nav class="bg-slate-900 p-4 text-white shadow-xl sticky top-0 z-50">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-xl font-bold tracking-wider text-cyan-400">
+                    <a href="catalogo.php" class="hover:text-cyan-400 transition flex items-center gap-2">
+                        <span>Villa De Libros</span>
                     </a>
+                </h1>
+                <div class="flex items-center space-x-6">
+                    <a href="alquiler/mis_alquileres.php" class="hover:text-cyan-400 transition flex items-center gap-2">
+                        📖 <span>Mi Historial</span>
+                    </a>
+
+                    <a href="alquiler/carrito.php" class="relative hover:text-cyan-400 transition flex items-center gap-2">
+                        🛒 <span>Carrito</span>
+                        <?php if ($conteo_carrito > 0): ?>
+                            <span class="absolute -top-2 -right-3 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                                <?php echo $conteo_carrito; ?>
+                            </span>
+                        <?php endif; ?>
+                    </a>
+
+                    <div class="h-6 w-px bg-slate-700"></div>
+
+                    <div class="flex items-center gap-4">
+                        <span class="text-sm text-slate-300 italic">Hola, <?php echo $_SESSION['nombre']; ?></span>
+                        <a href="auth/logout.php" class="bg-red-500/10 text-red-400 px-3 py-1 rounded-lg border border-red-500/20 hover:bg-red-500 hover:text-white transition text-sm">
+                            Salir
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-<h1 class="text-3xl font-bold mb-6 mt-6">Buscar Libros</h1>
+        <h1 class="text-3xl font-bold mb-6 mt-6">Buscar Libros</h1>
 
-<form method="POST" class="bg-white p-6 rounded-xl shadow-md mb-8 flex gap-4">
-    <input type="text" name="titulo" placeholder="Buscar por título" value="<?php echo htmlspecialchars($titulo); ?>" class="border p-2 rounded w-1/2">
-    <select name="genero" class="border p-2 rounded w-1/3">
-        <option value="">Todos los géneros</option>
-        <?php foreach($categorias as $cat): ?>
-            <option value="<?php echo $cat['id']; ?>" <?php if($genero == $cat['id']) echo 'selected'; ?>>
-                <?php echo $cat['nombre']; ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
-    <button type="submit" class="bg-blue-600 text-white px-6 rounded">BUSCAR</button>
-</form>
+        <form method="POST" class="bg-white p-6 rounded-xl shadow-md mb-8 flex gap-4">
+            <input type="text" name="titulo" placeholder="Buscar por título" value="<?php echo htmlspecialchars($titulo); ?>" class="border p-2 rounded w-1/2">
+            <select name="genero" class="border p-2 rounded w-1/3">
+                <option value="">Todos los géneros</option>
+                <?php foreach ($categorias as $cat): ?>
+                    <option value="<?php echo $cat['id']; ?>" <?php if ($genero == $cat['id']) echo 'selected'; ?>>
+                        <?php echo $cat['nombre']; ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <button type="submit" class="bg-blue-600 text-white px-6 rounded">BUSCAR</button>
+        </form>
 
-<table class="w-full border border-gray-400 bg-white shadow-lg rounded-lg overflow-hidden">
-    <thead class="bg-blue-500 text-white">
-        <tr>
-            <th class="p-3">ID</th>
-            <th class="p-3">Título</th>
-            <th class="p-3">Categoría</th>
-            <th class="p-3">Precio</th>
-        </tr>
-    </thead>
-    <tbody>
-    <?php if(count($libros) > 0): ?>
-        <?php foreach($libros as $libro): ?>
-            <tr class="text-center border-b hover:bg-gray-50 transition">
-                <td class="p-3"><?php echo $libro['id']; ?></td>
-                <td class="p-3 font-semibold"><?php echo $libro['titulo']; ?></td>
-                <td class="p-3"><?php echo $libro['categoria']; ?></td>
-                <td class="p-3 text-blue-600 font-bold">$<?php echo number_format($libro['precio'],2); ?></td>
-            </tr>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <tr>
-            <td colspan="4" class="text-center p-10 text-gray-400">
-                <span class="text-4xl">🔎</span><br>NO HAY RESULTADOS
-            </td>
-        </tr>
-    <?php endif; ?>
-    </tbody>
-</table>
+        <table class="w-full border border-gray-400 bg-white shadow-lg rounded-lg overflow-hidden">
+            <thead class="bg-blue-500 text-white">
+                <tr>
+                    <th class="p-3">ID</th>
+                    <th class="p-3">Título</th>
+                    <th class="p-3">Categoría</th>
+                    <th class="p-3">Precio</th>
+                    <th class="p-3">Acción</th> </tr>
+            </thead>
+            <tbody>
+                <?php if (count($libros) > 0): ?>
+                    <?php foreach ($libros as $libro): ?>
+                        <tr class="text-center border-b hover:bg-gray-50 transition">
+                            <td class="p-3"><?php echo $libro['id']; ?></td>
+                            <td class="p-3 font-semibold"><?php echo $libro['titulo']; ?></td>
+                            <td class="p-3"><?php echo $libro['categoria']; ?></td>
+                            <td class="p-3 text-blue-600 font-bold">$<?php echo number_format($libro['precio'], 2); ?></td>
+                            <td class="p-3">
+                                <a href="detalles.php?id=<?php echo $libro['id']; ?>" 
+                                   class="bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-bold py-1.5 px-4 rounded-full transition shadow-sm uppercase tracking-wider">
+                                    Ver Detalles
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="5" class="text-center p-10 text-gray-400"> <span class="text-4xl">🔎</span><br>NO HAY RESULTADOS
+                        </td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
 
-</body>
+    </body>
 </html>

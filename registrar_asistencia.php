@@ -10,7 +10,7 @@ if (!isset($_SESSION['usuario_id'])) {
 }
 
 $trabajador_id = $_SESSION['usuario_id'];
-// Establecemos la zona horaria para que la marca sea exacta (Opcional pero recomendado)
+// Establecemos la zona horaria para que la marca sea exacta 
 date_default_timezone_set('America/Costa_Rica'); 
 
 $fecha_hoy = date('Y-m-d');
