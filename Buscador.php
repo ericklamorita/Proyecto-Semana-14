@@ -45,7 +45,7 @@ $libros = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
 
-    <body class="bg-green-100 p-10">
+    <body class="bg-white p-10">
         <nav class="bg-slate-900 p-4 text-white shadow-xl sticky top-0 z-50">
             <div class="container mx-auto flex justify-between items-center">
                 <h1 class="text-xl font-bold tracking-wider text-cyan-400">
