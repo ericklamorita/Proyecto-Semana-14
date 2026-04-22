@@ -94,39 +94,66 @@ $libros = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <button type="submit" class="bg-blue-600 text-white px-6 rounded">BUSCAR</button>
         </form>
 
-        <table class="w-full border border-gray-400 bg-white shadow-lg rounded-lg overflow-hidden">
-            <thead class="bg-blue-500 text-white">
-                <tr>
-                    <th class="p-3">ID</th>
-                    <th class="p-3">Título</th>
-                    <th class="p-3">Categoría</th>
-                    <th class="p-3">Precio</th>
-                    <th class="p-3">Acción</th> </tr>
-            </thead>
-            <tbody>
-                <?php if (count($libros) > 0): ?>
-                    <?php foreach ($libros as $libro): ?>
-                        <tr class="text-center border-b hover:bg-gray-50 transition">
-                            <td class="p-3"><?php echo $libro['id']; ?></td>
-                            <td class="p-3 font-semibold"><?php echo $libro['titulo']; ?></td>
-                            <td class="p-3"><?php echo $libro['categoria']; ?></td>
-                            <td class="p-3 text-blue-600 font-bold">$<?php echo number_format($libro['precio'], 2); ?></td>
-                            <td class="p-3">
-                                <a href="detalles.php?id=<?php echo $libro['id']; ?>" 
-                                   class="bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-bold py-1.5 px-4 rounded-full transition shadow-sm uppercase tracking-wider">
-                                    Ver Detalles
-                                </a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="5" class="text-center p-10 text-gray-400"> <span class="text-4xl">🔎</span><br>NO HAY RESULTADOS
-                        </td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+<table class="w-full bg-white shadow-xl rounded-2xl overflow-hidden border border-slate-200">
+    
+    <thead class="bg-slate-900 text-white">
+        <tr>
+            <th class="p-4 text-left">Libro</th>
+            <th class="p-4 text-left">Categoría</th>
+            <th class="p-4 text-left">Precio</th>
+            <th class="p-4 text-center">Acción</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <?php if (count($libros) > 0): ?>
+            <?php foreach ($libros as $libro): ?>
+                <tr class="border-b hover:bg-slate-50 transition duration-200">
+                    
+                    <!-- LIBRO -->
+                    <td class="p-4">
+                        <p class="font-bold text-slate-800">
+                            <?php echo $libro['titulo']; ?>
+                        </p>
+                        <p class="text-sm text-slate-500 line-clamp-1">
+                            <?php echo $libro['descripcion']; ?>
+                        </p>
+                    </td>
+
+                    <!-- CATEGORÍA -->
+                    <td class="p-4">
+                        <span class="bg-cyan-100 text-cyan-700 px-3 py-1 rounded-full text-xs font-semibold">
+                            <?php echo $libro['categoria']; ?>
+                        </span>
+                    </td>
+
+                    <!-- PRECIO -->
+                    <td class="p-4">
+                        <span class="text-lg font-black text-slate-900">
+                            $<?php echo number_format($libro['precio'], 2); ?>
+                        </span>
+                    </td>
+
+                    <!-- ACCIÓN -->
+                    <td class="p-4 text-center">
+                        <a href="detalles.php?id=<?php echo $libro['id']; ?>" 
+                           class="bg-slate-900 text-white px-5 py-2 rounded-xl text-sm font-bold hover:bg-cyan-600 transition shadow">
+                            Ver Detalles
+                        </a>
+                    </td>
+
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="4" class="text-center p-10 text-gray-400">
+                    <span class="text-4xl">🔎</span><br>
+                    NO HAY RESULTADOS
+                </td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
 
     </body>
 </html>
