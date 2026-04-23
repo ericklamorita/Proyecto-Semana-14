@@ -25,7 +25,7 @@
 
         <button id="btnGoogle" class="btn" style="background: white; color: #444; display: flex; align-items: center; justify-content: center; gap: 10px;">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/500px-Google_%22G%22_logo.svg.png" alt="G" style="width: 18px;">
-            ACCEDER CON GOOGLE
+            ACCEDER CON GOOGLE (YA EXISTENTE)
         </button>
 
         <div id="seccion-registro">

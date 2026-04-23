@@ -24,7 +24,7 @@ $asistencia = $stmt->fetch();
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Panel de Asistencia | Librería Puriscaleña</title>
+        <title>Panel de Asistencia | Villa de Libros</title>
         <style>
             :root {
                 --primary-color: #00d4ff;
